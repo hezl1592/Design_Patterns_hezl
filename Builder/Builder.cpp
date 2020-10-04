@@ -3,62 +3,110 @@
 
 using namespace std;
 
-Product::Product()
+void Product::setPartA(const string &s)
 {
-    ProductPart();
-    cout << "return A product." << endl;
+    this->m_partA = s;
 }
 
+void Product::setPartB(const string &s)
+{
+    this->m_partB = s;
+}
+
+void Product::setPartC(const string &s)
+{
+    this->m_partC = s;
+}
 // Product::~Product()
 // {
 // }
 
-void Product::ProductPart()
+ConcreteBuilder::ConcreteBuilder()
 {
-    cout << "build part of product.." << endl;
+    this->m_pProduct = new Product();
+    cout << "Create empty product" << endl;
 }
 
-ProductPart::ProductPart()
+ConcreteBuilder::~ConcreteBuilder()
 {
-    cout << "build productpart.." << endl;
+    delete this->m_pProduct;
+    this->m_pProduct = NULL;
 }
 
-ProductPart *ProductPart::BuildPart()
+void ConcreteBuilder::BuildPartA()
 {
-    return new ProductPart;
+    this->m_pProduct->setPartA("A");
+    cout << "Build PartA " << endl;
 }
 
-void ConcreteBuilder::BuildPartA(const string &buildPara)
+void ConcreteBuilder::BuildPartB()
 {
-    cout << "Step1: Build PartA..." << buildPara << endl;
+    this->m_pProduct->setPartB("B");
+    cout << "Build PartB " << endl;
 }
 
-void ConcreteBuilder::BuildPartB(const string &buildPara)
+void ConcreteBuilder::BuildPartC()
 {
-    cout << "Step2: Build PartB..." << buildPara << endl;
-}
-
-void ConcreteBuilder::BuildPartC(const string &buildPara)
-{
-    cout << "Step3: Build PartC..." << buildPara << endl;
+    this->m_pProduct->setPartC("C");
+    cout << "Build PartC " << endl;
 }
 
 Product *ConcreteBuilder::GetProduct()
 {
-    BuildPartA(string("pre-defined"));
-    BuildPartB(string("pre-defined"));
-    BuildPartC(string("pre-defined"));
-    return new Product();
+    return this->m_pProduct;
+}
+
+ConcreteBuilder1::ConcreteBuilder1()
+{
+    this->m_pProduct = new Product();
+    cout << "Create empty product 1" << endl;
+}
+
+ConcreteBuilder1::~ConcreteBuilder1()
+{
+    delete this->m_pProduct;
+    this->m_pProduct = NULL;
+}
+
+void ConcreteBuilder1::BuildPartA()
+{
+    this->m_pProduct->setPartA("A");
+    cout << "Build PartA " << endl;
+}
+
+void ConcreteBuilder1::BuildPartB()
+{
+    this->m_pProduct->setPartB("B");
+    cout << "Build PartB " << endl;
+}
+
+void ConcreteBuilder1::BuildPartC()
+{
+    this->m_pProduct->setPartC("C");
+    cout << "Build PartC " << endl;
+}
+
+Product *ConcreteBuilder1::GetProduct()
+{
+    return this->m_pProduct;
 }
 
 Director::Director(Builder *bld)
 {
-    _bld = bld;
+    this->_bld = bld;
 }
 
-void Director::Construct()
-{
-    _bld->BuildPartA("user-defined");
-    _bld->BuildPartB("user-defined");
-    _bld->BuildPartC("user-defined");
+Director::~Director(){
+    delete this->_bld;
+    this->_bld = NULL;
 }
+
+void Director::Construct(){
+    this->_bld->BuildPartA();
+    this->_bld->BuildPartB();
+    this->_bld->BuildPartC();
+}
+
+// Product* Director::GetProduct(){
+//     return this->_bld->GetProduct()
+// }
